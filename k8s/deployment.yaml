@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hospitality-app
+spec:
+  replicas: 2
+
+  # ✅ Rolling Update Strategy (Zero Downtime)
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+
+  selector:
+    matchLabels:
+      app: hospitality
+
+  template:
+    metadata:
+      labels:
+        app: hospitality
+
+    spec:
+      containers:
+      - name: hospitality-container
+        image: hospitality-app
+        imagePullPolicy: Never
+
+        ports:
+        - containerPort: 80
+
+        volumeMounts:
+        - name: storage
+          mountPath: /usr/share/nginx/html/data
+
+        # ✅ Resource limits (IMPORTANT for HPA)
+        resources:
+          requests:
+            cpu: "100m"
+          limits:
+            cpu: "500m"
+
+      volumes:
+      - name: storage
+        persistentVolumeClaim:
+          claimName: hospitality-pvcapiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: hospitality-app
+          spec:
+            replicas: 2
+          
+            # ✅ Rolling Update Strategy (Zero Downtime)
+            strategy:
+              type: RollingUpdate
+              rollingUpdate:
+                maxUnavailable: 1
+                maxSurge: 1
+          
+            selector:
+              matchLabels:
+                app: hospitality
+          
+            template:
+              metadata:
+                labels:
+                  app: hospitality
+          
+              spec:
+                containers:
+                - name: hospitality-container
+                  image: hospitality-app
+                  imagePullPolicy: Never
+          
+                  ports:
+                  - containerPort: 80
+          
+                  volumeMounts:
+                  - name: storage
+                    mountPath: /usr/share/nginx/html/data
+          
+                  # ✅ Resource limits (IMPORTANT for HPA)
+                  resources:
+                    requests:
+                      cpu: "100m"
+                    limits:
+                      cpu: "500m"
+          
+                volumes:
+                - name: storage
+                  persistentVolumeClaim:
+                    claimName: hospitality-pvc
