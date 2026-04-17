@@ -3,12 +3,6 @@ pipeline {
 
     stages {
 
-        stage('Checkout') {
-            steps {
-                git branch: 'main',url: 'https://github.com/santhosh0731/hospitality.git'
-            }
-        }
-
         stage('Build') {
             steps {
                 echo "Building project..."
@@ -23,7 +17,7 @@ pipeline {
 
         stage('Run Container') {
             steps {
-                sh 'docker run -d -p 5002:80 hospitality-app || true'
+                sh 'docker run -d -p 5003:80 hospitality-app || true'
             }
         }
     }
