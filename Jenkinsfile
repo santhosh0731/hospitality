@@ -5,7 +5,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                git 'https://github.com/santhosh0731/hospitality.git'
+                git branch: 'main',url: 'https://github.com/santhosh0731/hospitality.git'
             }
         }
 
